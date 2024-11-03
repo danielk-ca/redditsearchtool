@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Source: Bootstrap - Search Box Plugin | Funke Makanjuola | https://codepen.io/FunkeM/pen/NBEjJg -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reddit Search Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .alert {
+            display: none;
+        }
+
+        /* Add some styling to the SVG icon */
+        .icon {
+            width: 20px; /* Adjust size as needed */
+            height: 20px; /* Adjust size as needed */
+            fill: currentColor; /* This makes the icon inherit the text color */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-center mt-5">
+        <a href="Index.html"><img src="images/refresh.png"></a></br>
+        </br>
+        <h2>Reddit Search Tool</h2>
+        </br>
+        <a href="https://www.reddit.com/" target="_blank"><img src="images/reddit.png" style="width:100px;height:100px;"></a></br>
+
+        <div class="col-md-6 offset-md-3 mt-4">
+            <div class="input-group mb-3">
+                <input type="text" id="redditQuery" class="form-control" placeholder="Search Reddit" aria-label="Search Reddit">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="redditSearchBtn">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="redditAlert" class="alert alert-info" role="alert"></div>
+        </div>
+
+        <div class="col-md-6 offset-md-3 mt-4">
+            <div class="input-group mb-3">
+                <input type="text" id="googleQuery" class="form-control" placeholder="Search Reddit on Google" aria-label="Search Reddit on Google">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="googleSearchBtn">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="googleAlert" class="alert alert-info" role="alert"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('redditSearchBtn').onclick = function () {
+            const queryString = encodeURIComponent(document.getElementById('redditQuery').value);
+            const redditUrl = 'https://www.reddit.com/search?q=' + queryString;
+            const redditAlert = document.getElementById('redditAlert');
+
+            if (queryString) {
+                redditAlert.innerHTML = `<a href="${redditUrl}" target="_blank">${redditUrl}</a>`;
+                redditAlert.style.display = 'block';
+            } else {
+                redditAlert.style.display = 'none';
+            }
+        };
+
+        document.getElementById('googleSearchBtn').onclick = function () {
+            const queryString2 = encodeURIComponent(document.getElementById('googleQuery').value);
+            const googleUrl = 'https://www.google.com/search?q=site:reddit.com ' + queryString2;
+            const googleAlert = document.getElementById('googleAlert');
+
+            if (queryString2) {
+                googleAlert.innerHTML = `<a href="${googleUrl}" target="_blank">${googleUrl}</a>`;
+                googleAlert.style.display = 'block';
+            } else {
+                googleAlert.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+
+</html>
