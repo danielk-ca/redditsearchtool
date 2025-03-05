@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Source: Bootstrap - Search Box Plugin | Funke Makanjuola | https://codepen.io/FunkeM/pen/NBEjJg -->
-
 <head>
     <meta charset="UTF-8">
     <title>Reddit Search Tool</title>
@@ -12,7 +10,7 @@
 
     <style>
         body {
-            background-color: #ffffff;
+            background: #ffffff;
         }
 
         .alert {
@@ -20,10 +18,22 @@
         }
 
         /* Add some styling to the SVG icon */
-        .icon {
+        .searchicon {
             width: 20px; /* Adjust size as needed */
             height: 20px; /* Adjust size as needed */
             fill: currentColor; /* This makes the icon inherit the text color */
+        }
+
+        /* Add some styling to the SVG icon */
+        .clearicon {
+            width: 20px; /* Adjust size as needed */
+            height: 20px; /* Adjust size as needed */
+            fill: currentColor; /* This makes the icon inherit the text color */
+        }
+
+        /* Remove border radius for text input, clear button, and search button */
+        #textInput1, #clearBtn, #searchBtn {
+            border-radius: 0 !important;  /* Ensure the border radius is removed */
         }
     </style>
 </head>
@@ -38,10 +48,15 @@
 
         <div class="col-md-6 offset-md-3 mt-4">
             <div class="input-group mb-3">
-                <input type="text" id="redditQuery" class="form-control" placeholder="Search Reddit" aria-label="Search Reddit">
+                <input type="text" id="textInput1" class="form-control" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-secondary" id="clearBtn">
+                    <svg class="clearicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                        <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256z"/>
+                    </svg>
+                </button>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" id="redditSearchBtn">
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    <button class="btn btn-outline-secondary" id="searchBtn">
+                        <svg class="searchicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
                     </button>
                 </div>
             </div>
@@ -61,16 +76,17 @@
     </br>
 
     <script>
-        document.getElementById('redditSearchBtn').onclick = function () {
-            const queryString = encodeURIComponent(document.getElementById('redditQuery').value);
+        // Handle Search Button click
+        document.getElementById('searchBtn').onclick = function () {
+            const queryString = encodeURIComponent(document.getElementById('textInput1').value);
             const redditUrl = 'https://www.reddit.com/search?q=' + queryString;
             const googleUrl = 'https://www.google.com/search?q=site:reddit.com ' + queryString;
             const redditAlert = document.getElementById('redditAlert');
 
             if (queryString) {
                 redditAlert.innerHTML = `
-                <a href='${googleUrl}' target='_blank'>Open Google with Search Query</a><br><br>
-                <a href='${redditUrl}' target='_blank'>Open Reddit with Search Query</a>
+                    <a href='${googleUrl}' target='_blank'>Open Google with Search Query</a><br><br>
+                    <a href='${redditUrl}' target='_blank'>Open Reddit with Search Query</a>
                 `;
                 redditAlert.style.display = 'block';
             } else {
@@ -78,6 +94,13 @@
             }
         };
 
+        // Handle Clear Button click
+        document.getElementById('clearBtn').onclick = function () {
+            // Clear the textbox
+            document.getElementById('textInput1').value = '';
+            const redditAlert = document.getElementById('redditAlert');
+            redditAlert.style.display = 'none'; // Hide the alert component
+        };
     </script>
 </body>
 
