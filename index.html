@@ -60,7 +60,7 @@
                     </button>
                 </div>
             </div>
-            <div id="redditAlert" class="alert alert-info" role="alert"></div>
+            <div id="alertBox1" class="alert alert-info" role="alert"></div>
         </div>
 
     </br>
@@ -75,33 +75,79 @@
     </div>
     </br>
 
-    <script>
-        // Handle Search Button click
-        document.getElementById('searchBtn').onclick = function () {
-            const queryString = encodeURIComponent(document.getElementById('textInput1').value);
-            const redditUrl = 'https://www.reddit.com/search?q=' + queryString;
-            const googleUrl = 'https://www.google.com/search?q=site:reddit.com ' + queryString;
-            const redditAlert = document.getElementById('redditAlert');
+<script>
 
-            if (queryString) {
-                redditAlert.innerHTML = `
-                    <a href='${googleUrl}' target='_blank'>Open Google with Search Query</a><br><br>
-                    <a href='${redditUrl}' target='_blank'>Open Reddit with Search Query</a>
-                `;
-                redditAlert.style.display = 'block';
-            } else {
-                redditAlert.style.display = 'none';
-            }
-        };
+// JavaScript Section Start
 
-        // Handle Clear Button click
-        document.getElementById('clearBtn').onclick = function () {
+        // Handle Clear Button Click
+        document.getElementById('clearBtn').addEventListener('click', function() {
             // Clear the textbox
             document.getElementById('textInput1').value = '';
-            const redditAlert = document.getElementById('redditAlert');
-            redditAlert.style.display = 'none'; // Hide the alert component
-        };
-    </script>
+            const alertBox1 = document.getElementById('alertBox1');
+            alertBox1.style.display = 'none'; // Hide the alert component
+        });
+
+    // Function to perform the search
+    function performSearch() {
+        const textInput = document.getElementById('textInput1').value.trim();
+
+            // Proceed if textbox is not empty
+            if (textInput) {
+
+                const plaintext = document.getElementById('textInput1').value;
+
+                // URL Encoding (Percent Encoding) the Query String part of the full URL using encodeURIComponent
+                // The encodeURIComponent function fails to encode certain special characters - _ . ! ~ * ' ( ) ----- You have to manually specify conversion to corresponding UTF-8 Character
+                // For encodeURIComponent function to have full coverage of all special characters, coding below manually specifies conversion to UTF-8 for characters not natively supported
+                // Once encodeURIComponent function has full coverage of all special characters, any desired deviation from UTF-8 can be specified
+    
+                // As per RFC 3986, certain special characters that are allowed in a URI (i.e. not URL encoded) are: hyphen ( - ), underscore ( _ ), period ( . ), and tilde ( ~ )
+                const encoded = encodeURIComponent(plaintext).replace(/%20/g, '+')// Convert %20 to + (For application/x-www-form-urlencoded, spaces are to be replaced by +) ----- If URL Encoding Desired, delete this line
+                .replace(/-/g, '-')// Convert - to - (Do Nothing) ----- If URL Encoding Desired, change to: .replace(/-/g, '%2D')
+                .replace(/_/g, '_')// Convert _ to _ (Do Nothing) ----- If URL Encoding Desired, change to: .replace(/_/g, '%5F')
+                .replace(/\./g, '.')// Convert . to . (Do Nothing) ----- If URL Encoding Desired, change to: .replace(/\./g, '%2E')
+                .replace(/!/g, '%21')// Convert ! to %21
+                .replace(/~/g, '~')// Convert ~ to ~ (Do Nothing) ----- If URL Encoding Desired, change to: .replace(/~/g, '%7E')
+                .replace(/\*/g, '%2A')// Convert * to %2A
+                .replace(/'/g, '%27')// Convert ' to %27
+                .replace(/\(/g, '%28')// Convert ( to %28
+                .replace(/\)/g, '%29');
+                // Convert ) to %29
+    
+                const queryString = encoded;
+
+                // Define Variables for Reddit Search URLs
+
+                let directLink1 = 'https://www.reddit.com/search?q=' + queryString;
+                let directLink2 = 'https://www.google.com/search?q=site:reddit.com+' + queryString;
+                let alertBox1 = document.getElementById('alertBox1');
+
+                if (queryString) {
+                    alertBox1.innerHTML = `
+                        <a href='${directLink1}' target='_blank'>Open Google with Search Query</a><br><br>
+                        <a href='${directLink2}' target='_blank'>Open Reddit with Search Query</a>
+                    `;
+                    alertBox1.style.display = 'block';
+                } else {
+                    alertBox1.style.display = 'none';
+                }
+            }
+    }
+
+    // Trigger search on button click
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+
+    // Trigger search on pressing Enter in the textbox
+    document.getElementById('textInput1').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+
+// JavaScript Section End
+
+</script>
+
 </body>
 
 </html>
